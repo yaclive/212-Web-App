@@ -1,22 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 	<div class="wrapper">
-		<div class="column">
+		<div class="column col-buttons">
 			{% if has_visited==0 %}
+			<span class="precaution">Choose wisely...</span>
 			<form action="{{ url_for('confirm') }}" method="POST">
-			<input type="submit" name="action" class="btn" value="add_coin">
-			<input type="submit" name="action" class="btn" value="take_coin">
+			<input type="submit" name="action" class="btn" value="add coin">
+			<div class="btn-divider">OR</div>
+			<input type="submit" name="action" class="btn btn-take" value="take coin">
+			<div class="btn-divider">OR</div>
 			</form>
-			<a href="{{ url_for('vote') }}"><button class="btn">add vote</button></a>
+			<a href="{{ url_for('vote') }}"><button class="btn btn-vote">add vote</button></a>
+
+			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
 			{% else %}
-			<p class="voteMessage">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
+			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
 			{% endif %}
 		</div>
 		<div class="column">
 			<div class="jar"></div>
 			<div class="stats">
-				<div class="main">$240/$1000</div>
-				<div class="sub">24% full. 760 coins to go. <br />When the jar is full theres no going back.</div>
+				<div class="main">${{ coins }}/${{ capacity }}</div>
+				<div class="sub">{{ (coins/capacity) * 100 }}&percnt; full. {{ capacity-coins }} coins to go. <br />When the jar is full, theres no going back.</div>
 			</div>
 		</div>
 	</div>

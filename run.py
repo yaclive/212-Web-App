@@ -22,12 +22,54 @@ def index():
 
 @app.route('/jar')
 def jar():
-    return(render_template('jar.html', has_visited=check_ip())) # Check if user has visited before, if so send that to template
+    db = sqlite3.connect(DBFILE)
+
+    cur = db.execute('SELECT * FROM jars WHERE id=1')
+    stats = cur.fetchone()
+
+    return(render_template(
+        'jar.html',
+        coins=stats[1],
+        capacity=stats[2],
+        has_visited=check_ip() # Check if user has visited before, if so send that to template
+    ))
 
 @app.route('/vote')
 def vote():
     return(render_template('vote.html'))
 
-@app.route('/confirm')
+@app.route('/confirm', methods=['GET', 'POST'])
 def confirm():
-    return(render_template('confirm.html'))
+    if (check_ip()): return redirect(url_for('jar')) # Deny double submission
+
+    if (request.form['action'] == 'add coin' or request.form['action'] == 'take coin'):
+        # Make change to jar
+        db = sqlite3.connect(DBFILE)
+
+        # First and foremost, log users ip address to mitigate attacks
+        #user_ip = request.remote_addr
+        #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
+        #db.commit()
+
+        # Get jar balance
+        cur = db.execute('SELECT coins FROM jars WHERE id=1')
+        coins = cur.fetchone()[0] # Amount of coins currently in the jar
+
+        if (request.form['action'] == 'add coin'):
+            coins += 1
+        elif (request.form['action'] == 'take coin'):
+            coins -= 1
+
+        coins = max(coins, 0) # Ensure jar cant have negative coins
+
+        cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
+
+        # Detect if the jar is full
+        # Close project
+
+        db.commit()
+        db.close()
+
+        return(render_template('confirm.html', action=request.form['action']))
+    else:
+        return redirect(url_for('jar')) # Send them back
