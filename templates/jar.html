@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-	<div class="wrapper">
+	<div class="wrapper wrapper-jar">
 		<div class="column col-buttons">
 			{% if has_visited==0 %}
 			<span class="precaution">Choose wisely...</span>
@@ -11,17 +11,15 @@
 			<div class="btn-divider">OR</div>
 			</form>
 			<a href="{{ url_for('vote') }}"><button class="btn btn-vote">add vote</button></a>
-
-			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
 			{% else %}
 			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
 			{% endif %}
 		</div>
-		<div class="column">
+		<div class="column col-jar">
 			<div class="jar"></div>
 			<div class="stats">
 				<div class="main">${{ coins }}/${{ capacity }}</div>
-				<div class="sub">{{ (coins/capacity) * 100 }}&percnt; full. {{ capacity-coins }} coins to go. <br />When the jar is full, theres no going back.</div>
+				<div class="sub"><strong>{{ percent }}&percnt; full. {{ capacity-coins }} coins to go. </strong><br />When the jar is full, there's no going back.</div>
 			</div>
 		</div>
 	</div>

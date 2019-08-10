@@ -31,6 +31,7 @@ def jar():
         'jar.html',
         coins=stats[1],
         capacity=stats[2],
+        percent=round((stats[1]/stats[2]) * 100, 2),
         has_visited=check_ip() # Check if user has visited before, if so send that to template
     ))
 
@@ -41,35 +42,33 @@ def vote():
 @app.route('/confirm', methods=['GET', 'POST'])
 def confirm():
     if (check_ip()): return redirect(url_for('jar')) # Deny double submission
+    if 'action' not in request.form: return redirect(url_for('jar')) # Deny request without form data
 
-    if (request.form['action'] == 'add coin' or request.form['action'] == 'take coin'):
-        # Make change to jar
-        db = sqlite3.connect(DBFILE)
+    # Make change to jar
+    db = sqlite3.connect(DBFILE)
 
-        # First and foremost, log users ip address to mitigate attacks
-        #user_ip = request.remote_addr
-        #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
-        #db.commit()
+    # First and foremost, log users ip address to mitigate attacks
+    #user_ip = request.remote_addr
+    #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
+    #db.commit()
 
-        # Get jar balance
-        cur = db.execute('SELECT coins FROM jars WHERE id=1')
-        coins = cur.fetchone()[0] # Amount of coins currently in the jar
+    # Get jar balance
+    cur = db.execute('SELECT coins FROM jars WHERE id=1')
+    coins = cur.fetchone()[0] # Amount of coins currently in the jar
 
-        if (request.form['action'] == 'add coin'):
-            coins += 1
-        elif (request.form['action'] == 'take coin'):
-            coins -= 1
+    if (request.form['action'] == 'add coin'):
+        coins += 1
+    elif (request.form['action'] == 'take coin'):
+        coins -= 1
 
-        coins = max(coins, 0) # Ensure jar cant have negative coins
+    coins = max(coins, 0) # Ensure jar cant have negative coins
 
-        cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
+    cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
 
-        # Detect if the jar is full
-        # Close project
+    # Detect if the jar is full
+    # Close project
 
-        db.commit()
-        db.close()
+    db.commit()
+    db.close()
 
-        return(render_template('confirm.html', action=request.form['action']))
-    else:
-        return redirect(url_for('jar')) # Send them back
+    return(render_template('confirm.html', action=request.form['action']))
