@@ -15,7 +15,7 @@ def check_ip():
     db.close()
 
     return user_check
-    
+
 @app.route('/')
 def index():
     return(render_template('index.html'))
@@ -48,6 +48,7 @@ def confirm():
     db = sqlite3.connect(DBFILE)
 
     # First and foremost, log users ip address to mitigate attacks
+
     #user_ip = request.remote_addr
     #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
     #db.commit()

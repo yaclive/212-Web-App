@@ -4,13 +4,13 @@
 		<div class="column col-buttons">
 			{% if has_visited==0 %}
 			<span class="precaution">Choose wisely...</span>
-			<form action="{{ url_for('confirm') }}" method="POST">
-			<input type="submit" name="action" class="btn" value="add coin">
-			<div class="btn-divider">OR</div>
-			<input type="submit" name="action" class="btn btn-take" value="take coin">
-			<div class="btn-divider">OR</div>
+			<form class="form-btns" action="{{ url_for('confirm') }}" method="POST">
+				<input type="submit" name="action" class="btn" value="add coin">
+				<div class="btn-divider">OR</div>
+				<input type="submit" name="action" class="btn btn-take" value="take coin">
+				<div class="btn-divider">OR</div>
 			</form>
-			<a href="{{ url_for('vote') }}"><button class="btn btn-vote">add vote</button></a>
+			<button class="btn btn-vote">add vote</button>
 			{% else %}
 			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
 			{% endif %}
@@ -23,4 +23,65 @@
 			</div>
 		</div>
 	</div>
+	<div class="paper-fade"></div>
+	<div class="paper paper-floating">
+		<h1>add a vote</h1>
+		<div class="btn-close"></div>
+		<div class="voteOptions">
+
+			<div class="option">
+				<div class="option-button">
+					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
+					<div class="title">Double the capacity of the jar</div>
+				</div>
+				<div class="stats">230/500</div>
+			</div>
+			<div class="option">
+				<div class="option-button">
+					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
+					<div class="title">Double the capacity of the jar</div>
+				</div>
+				<div class="stats">230/500</div>
+			</div>
+			<div class="option">
+				<div class="option-button">
+					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
+					<div class="title">Double the capacity of the jar</div>
+				</div>
+				<div class="stats">230/500</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+		function openModal() {
+			var form = document.getElementsByClassName("form-btns")[0];
+			form.style.display = "none";
+
+			var fade = document.getElementsByClassName("paper-fade")[0];
+			fade.style.opacity = 1;
+			fade.style.pointerEvents = "all";
+
+			var paper = document.getElementsByClassName("paper-floating")[0];
+			paper.style.display = "block";
+		}
+
+		function closeModal() {
+			var form = document.getElementsByClassName("form-btns")[0];
+			form.style.display = "initial";
+
+			var fade = document.getElementsByClassName("paper-fade")[0];
+			fade.style.opacity = 0;
+			fade.style.pointerEvents = "none";
+
+			var paper = document.getElementsByClassName("paper-floating")[0];
+			paper.style.display = "none";
+		}
+
+		document.getElementsByClassName("btn-vote")[0].addEventListener("click", openModal);
+		document.getElementsByClassName("btn-close")[0].addEventListener("click", closeModal);
+		document.getElementsByClassName("paper-fade")[0].addEventListener("click", closeModal);
+
+	</script>
 {% endblock %}

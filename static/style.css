@@ -4,6 +4,7 @@
 	--blue: #289CF0;
 	--yellow: #FFEB00;
 	--red: #F94018;
+	--grey: rgba(10, 40, 61, 0.888);
 }
 
 * {
@@ -26,15 +27,15 @@ body {
 .paper {
 	background: white;
 	text-align: center;
-	color: rgba(10, 40, 61, 0.888);
+	color: var(--grey);
 }
 .paper h1 {
 	text-transform: uppercase;
-	font-size: 4em;
+	font-size: 4.2em;
 	line-height: 1em;
 	padding: 35px 0;
 }
-.paper p {
+.paper p, .option .option-button {
 	font-size: 1.2em;
 	font-weight: 600;
 	line-height: 1.2em;
@@ -46,6 +47,80 @@ body {
 	margin-bottom: 45px;
 }
 
+.paper-fade {
+	opacity: 0;
+	pointer-events: none;
+
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.2);
+
+	transition: opacity 0.5s ease;
+}
+.paper-floating {
+	display: none;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	max-width: 1125px;
+	margin: 0 auto;
+	padding: 20px;
+	cursor: url('coin.png') 50 50, auto;
+}
+.paper-floating h1 {
+	text-align: left;
+}
+.btn-close {
+	position: absolute;
+	cursor: pointer;
+	top: 4.5em;
+	right: 35px;
+	background: url('x_dark.svg');
+	width: 26px;
+	height: 26px;
+}
+
+.voteOptions {
+	margin: 0 -10px;
+}
+.voteOptions .option {
+	display: inline-block;
+	margin: 0 0 20px;
+}
+.option .option-button {
+	margin: 10px;
+}
+.option .option-button:hover {
+	background: var(--grey);
+	color: white;
+}
+.option .title {
+	font-weight: 700;
+	font-size: 1.2em;
+  margin: 10px 0 0;
+}
+.option .stats {
+	background: var(--yellow);
+	font-weight: 700;
+	font-size: 3em;
+	line-height: 1.3em;
+	margin: 0 10px;
+}
+.option:nth-of-type(1) .stats {
+	transform: rotate(-2deg);
+}
+.option:nth-of-type(2) .stats {
+	transform: rotate(2deg);
+}
+.option:nth-of-type(3) .stats {
+	transform: rotate(-1deg);
+}
+
 
 .column {
 	display: inline-block;
@@ -54,7 +129,7 @@ body {
 	margin: 20px 0;
 }
 .col-buttons {
-	
+
 }
 .col-jar {
 	text-align: left;
@@ -142,7 +217,6 @@ body {
     margin-top: 6px;
 }
 
-
 @media only screen and (min-width: 800px) {
 	.wrapper-jar {
 		max-width: 100%;
@@ -150,5 +224,17 @@ body {
 
 	.column {
 		margin: 4%;
+	}
+}
+
+@media only screen and (min-width: 1240px) {
+	.paper-floating {
+		margin-top: 6%;
+	}
+
+	.btn-close {
+		background: url('x.svg');
+		top: 0;
+		right: -40px;
 	}
 }
