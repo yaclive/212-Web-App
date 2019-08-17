@@ -16,6 +16,36 @@ def check_ip():
 
     return user_check
 
+def check_frozen():
+    db = sqlite3.connect(DBFILE)
+
+    cur = db.execute('SELECT is_frozen FROM jars WHERE id=1') # Check if jar is frozen
+    frozen_check = cur.fetchone()[0] # State of query
+
+    db.close()
+
+    return frozen_check
+
+def check_full():
+    db = sqlite3.connect(DBFILE)
+
+    cur = db.execute('SELECT coins FROM jars WHERE id=1') # Get jar balance
+    coins = cur.fetchone()[0] # State of query
+
+    cur = db.execute('SELECT capacity FROM jars WHERE id=1') # Get jar balance
+    capacity = cur.fetchone()[0] # State of query
+
+    db.close()
+
+    return (coins >= capacity)
+
+def check_status():
+    if (check_ip()): return "voted"
+    if (check_frozen()): return "frozen"
+    if (check_full()): return "full"
+
+    return ""
+
 @app.route('/')
 def index():
     return(render_template('index.html'))
@@ -32,16 +62,12 @@ def jar():
         coins=stats[1],
         capacity=stats[2],
         percent=round((stats[1]/stats[2]) * 100, 2),
-        has_visited=check_ip() # Check if user has visited before, if so send that to template
+        error=check_status() # Check if user has visited before, if so send that to template
     ))
-
-@app.route('/vote')
-def vote():
-    return(render_template('vote.html'))
 
 @app.route('/confirm', methods=['GET', 'POST'])
 def confirm():
-    if (check_ip()): return redirect(url_for('jar')) # Deny double submission
+    if (check_status()): return redirect(url_for('jar')) # Deny dodgy submission
     if 'action' not in request.form: return redirect(url_for('jar')) # Deny request without form data
 
     # Make change to jar
@@ -65,9 +91,6 @@ def confirm():
     coins = max(coins, 0) # Ensure jar cant have negative coins
 
     cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
-
-    # Detect if the jar is full
-    # Close project
 
     db.commit()
     db.close()

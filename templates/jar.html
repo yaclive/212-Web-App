@@ -2,7 +2,7 @@
 {% block content %}
 	<div class="wrapper wrapper-jar">
 		<div class="column col-buttons">
-			{% if has_visited==0 %}
+			{% if not error %}
 			<span class="precaution">Choose wisely...</span>
 			<form class="form-btns" action="{{ url_for('confirm') }}" method="POST">
 				<input type="submit" name="action" class="btn" value="add coin">
@@ -11,8 +11,12 @@
 				<div class="btn-divider">OR</div>
 			</form>
 			<button class="btn btn-vote">add vote</button>
-			{% else %}
+			{% elif error=="voted" %}
 			<p class="error">Sorry, you have already made your decision. Either that, or someone else on your network has.</p>
+			{% elif error=="frozen" %}
+			<p class="error">The jar is currently frozen shut. It will take 24 hours to thaw.</p>
+			{% elif error=="full" %}
+			<p class="error">The jar is full.</p>
 			{% endif %}
 		</div>
 		<div class="column col-jar">
