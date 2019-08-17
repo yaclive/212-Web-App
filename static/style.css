@@ -28,6 +28,10 @@ body {
 	background: white;
 	text-align: center;
 	color: var(--grey);
+	border: solid;
+	border-width: 20px 0;
+	border-image: url(border.svg) 18 24 round;
+	background-clip: padding-box;
 }
 .paper h1 {
 	text-transform: uppercase;
@@ -64,6 +68,7 @@ body {
 	display: none;
 
 	position: absolute;
+	z-index: 9;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -95,6 +100,7 @@ body {
 }
 .option .option-button {
 	margin: 10px;
+	padding-bottom: 10px;
 }
 .option .option-button:hover {
 	background: var(--grey);
@@ -103,7 +109,9 @@ body {
 .option .title {
 	font-weight: 700;
 	font-size: 1.2em;
-  margin: 10px 0 0;
+	margin: 10px auto 0;
+	max-width: 245px;
+	height: 52px;
 }
 .option .stats {
 	background: var(--yellow);
@@ -197,10 +205,42 @@ body {
 }
 
 .jar {
+	position: relative;
+	/* padding-top: inherit; */
+	/* overflow: visible; */
+	height: 476px;
+	margin-bottom: 118px;
+}
+/*
+.coins {
+	position: absolute;
+	background: url(coins.png);
+	background-size: contain;
+	left: 12px;
+	right: 10px;
+	top: 54px;
+	bottom: 58px;
+}
+*/
+.coins {
+	position: absolute;
+	background: url(coins.png) no-repeat;
+	background-size: 100%;
+	left: 14px;
+	right: 14px;
+	bottom: -66px;
+	border-radius: 0 0 58px 58px;
+}
+.jar .image {
+	position: absolute;
 	background: url(jar.png);
 	background-size: 100%;
-	padding-top: 185%;
 	mix-blend-mode: multiply;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin-bottom: -118px;
 }
 
 .stats .main {
@@ -218,7 +258,28 @@ body {
     margin-top: 6px;
 }
 
+.face {
+	right: 0;
+	bottom: 10px;
+	background: url("face.png") no-repeat;
+	background-size: 100%;
+	width: 176px;
+	height: 176px;
+	margin: 10px auto;
+	opacity: 0.5;
+
+	transition: all .1s ease;
+}
+.face:hover {
+	opacity: 0.8;
+	transform: rotate(5deg);
+}
+
 @media only screen and (min-width: 800px) {
+	.paper {
+		margin-top: 40px;
+	}
+
 	.wrapper-jar {
 		max-width: 100%;
 	}
@@ -240,5 +301,9 @@ body {
 		background: url('x.svg');
 		top: 0;
 		right: -40px;
+	}
+
+	.face {
+		position: fixed;
 	}
 }

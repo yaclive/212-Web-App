@@ -20,7 +20,10 @@
 			{% endif %}
 		</div>
 		<div class="column col-jar">
-			<div class="jar"></div>
+			<div class="jar">
+				<div class="coins" style="height: {{ percent }}%;"></div>
+				<div class="image"></div>
+			</div>
 			<div class="stats">
 				<div class="main">${{ coins }}/${{ capacity }}</div>
 				<div class="sub"><strong>{{ percent }}&percnt; full. {{ capacity-coins }} coins to go. </strong><br />When the jar is full, there's no going back.</div>
@@ -35,22 +38,22 @@
 
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
-					<div class="title">Double the capacity of the jar</div>
+					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar size">
+					<div class="title">Double the size of the jar</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
-					<div class="title">Double the capacity of the jar</div>
+					<img src="{{ url_for('static', filename='icon_freeze_jar.svg') }}" alt="Icon for freezing voting for one day">
+					<div class="title">Freeze the lid of the jar</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar capacity" />
-					<div class="title">Double the capacity of the jar</div>
+					<img src="{{ url_for('static', filename='icon_tip_jar.svg') }}" alt="Icon for tipping out half of the coins from the jar">
+					<div class="title">Tip out half of the coins</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
