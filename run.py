@@ -57,11 +57,15 @@ def jar():
     cur = db.execute('SELECT * FROM jars WHERE id=1')
     stats = cur.fetchone()
 
+    cur = db.execute('SELECT * FROM modifiers WHERE id=1')
+    votes = cur.fetchone()
+
     return(render_template(
         'jar.html',
         coins=stats[1],
         capacity=stats[2],
         percent=round((stats[1]/stats[2]) * 100, 2),
+        votes=votes,
         error=check_status() # Check if user has visited before, if so send that to template
     ))
 
@@ -100,15 +104,44 @@ def confirm():
         votes = cur.fetchone()
 
         if (action == 'add vote double'):
-            if ((votes[1] + 1) < 500):
-                votes[1] += 1
+            vote = votes[1]
+            if ((vote + 1) < 500):
+                vote += 1
             else:
-                votes[1] = 0
-                print('double!')
+                vote = 0
+
+                # Max votes reached, update jar
+                cur = db.execute('UPDATE jars SET capacity = capacity * 2 WHERE id=1') # Double jar capacity
+                db.commit()
+
+            cur = db.execute('UPDATE modifiers SET double_capacity=? WHERE id=1', (vote,)) # Set new vote amount
+            db.commit()
         elif (action == 'add vote freeze'):
-            votes[2] += 1
+            vote = votes[2]
+            if ((vote + 1) < 500):
+                vote += 1
+            else:
+                vote = 0
+                
+                # Max votes reached, update jar
+                cur = db.execute('UPDATE jars SET is_frozen = true WHERE id=1') # Freeze jar
+                db.commit()
+
+            cur = db.execute('UPDATE modifiers SET freeze=? WHERE id=1', (vote,)) # Set new vote amount
+            db.commit()
         elif (action == 'add vote tip'):
-            votes[3] += 1
+            vote = votes[3]
+            if ((vote + 1) < 500):
+                vote += 1
+            else:
+                vote = 0
+                
+                # Max votes reached, update jar
+                cur = db.execute('UPDATE jars SET coins = coins / 2 WHERE id=1') # Double jar capacity
+                db.commit()
+
+            cur = db.execute('UPDATE modifiers SET tip_out=? WHERE id=1', (vote,)) # Set new vote amount
+            db.commit()
 
     db.close()
 

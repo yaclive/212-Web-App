@@ -38,32 +38,32 @@
 		<div class="voteOptions">
 
 			<div class="option">
-				<div class="option-button">
+				<div class="option-button" value="add vote double">
 					<img class="icon" src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar size">
 					<img class="icon_hover" src="{{ url_for('static', filename='icon_2xjar_hover.svg') }}" alt="Icon for doubling jar size">
 					<div class="title">Double the size of the jar</div>
 				</div>
-				<div class="stats">230/500</div>
+				<div class="stats">{{ votes[1] }}/500</div>
 			</div>
 			<div class="option">
-				<div class="option-button">
+				<div class="option-button" value="add vote freeze">
 					<img class="icon" src="{{ url_for('static', filename='icon_freeze_jar.svg') }}" alt="Icon for freezing voting for one day">
 					<img class="icon_hover" src="{{ url_for('static', filename='icon_freeze_jar_hover.svg') }}" alt="Icon for freezing voting for one day">
 					<div class="title">Freeze the lid of the jar</div>
 				</div>
-				<div class="stats">230/500</div>
+				<div class="stats">{{ votes[2] }}/500</div>
 			</div>
 			<div class="option">
-				<div class="option-button">
+				<div class="option-button" value="add vote tip">
 					<img class="icon" src="{{ url_for('static', filename='icon_tip_jar.svg') }}" alt="Icon for tipping out half of the coins from the jar">
 					<img class="icon_hover" src="{{ url_for('static', filename='icon_tip_jar_hover.svg') }}" alt="Icon for tipping out half of the coins from the jar">
 					<div class="title">Tip out half of the coins</div>
 				</div>
-				<div class="stats">230/500</div>
+				<div class="stats">{{ votes[3] }}/500</div>
 			</div>
 
-			<form action="{{ url_for('confirm') }}" method="POST">
-				<input type="hidden" name="action" value="null">
+			<form id="vote_button_form" action="{{ url_for('confirm') }}" method="POST">
+				<input id="vote_button_hidden" type="hidden" name="action" value="null">
 			</form>
 
 		</div>
@@ -97,6 +97,17 @@
 		document.getElementsByClassName("btn-vote")[0].addEventListener("click", openModal);
 		document.getElementsByClassName("btn-close")[0].addEventListener("click", closeModal);
 		document.getElementsByClassName("paper-fade")[0].addEventListener("click", closeModal);
+
+		var vote_buttons = document.getElementsByClassName("option-button");
+
+		for (var i = 0; i < vote_buttons.length; i++) {
+			vote_buttons[i].addEventListener("click", function(event) {
+				var hidden_input = document.getElementById("vote_button_hidden");
+
+				hidden_input.setAttribute("value", this.getAttribute("value"));
+				document.getElementById("vote_button_form").submit();
+			}, false);
+		}
 
 	</script>
 {% endblock %}
