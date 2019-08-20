@@ -40,9 +40,9 @@ def check_full():
     return (coins >= capacity)
 
 def check_status():
-    if (check_ip()): return "voted"
-    if (check_frozen()): return "frozen"
     if (check_full()): return "full"
+    if (check_frozen()): return "frozen"
+    if (check_ip()): return "voted"
 
     return ""
 
@@ -85,6 +85,7 @@ def confirm():
     user_ip = request.remote_addr
     cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
     db.commit()
+    # END
 
     if (action == 'add coin' or action == 'take coin'):
         # Get jar balance
