@@ -80,10 +80,11 @@ def confirm():
     db = sqlite3.connect(DBFILE)
 
     # First and foremost, log users ip address to mitigate attacks
-
-    #user_ip = request.remote_addr
-    #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
-    #db.commit()
+    # COMMENT OUT THE FOLLOWING TO DISABLE IP TRACKING
+    # to vote again, DELETE FROM voters WHERE ip_address=127.0.0.1
+    user_ip = request.remote_addr
+    cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
+    db.commit()
 
     if (action == 'add coin' or action == 'take coin'):
         # Get jar balance
