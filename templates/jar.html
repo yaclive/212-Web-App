@@ -39,25 +39,32 @@
 
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar size">
+					<img class="icon" src="{{ url_for('static', filename='icon_2xjar.svg') }}" alt="Icon for doubling jar size">
+					<img class="icon_hover" src="{{ url_for('static', filename='icon_2xjar_hover.svg') }}" alt="Icon for doubling jar size">
 					<div class="title">Double the size of the jar</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_freeze_jar.svg') }}" alt="Icon for freezing voting for one day">
+					<img class="icon" src="{{ url_for('static', filename='icon_freeze_jar.svg') }}" alt="Icon for freezing voting for one day">
+					<img class="icon_hover" src="{{ url_for('static', filename='icon_freeze_jar_hover.svg') }}" alt="Icon for freezing voting for one day">
 					<div class="title">Freeze the lid of the jar</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
 			<div class="option">
 				<div class="option-button">
-					<img src="{{ url_for('static', filename='icon_tip_jar.svg') }}" alt="Icon for tipping out half of the coins from the jar">
+					<img class="icon" src="{{ url_for('static', filename='icon_tip_jar.svg') }}" alt="Icon for tipping out half of the coins from the jar">
+					<img class="icon_hover" src="{{ url_for('static', filename='icon_tip_jar_hover.svg') }}" alt="Icon for tipping out half of the coins from the jar">
 					<div class="title">Tip out half of the coins</div>
 				</div>
 				<div class="stats">230/500</div>
 			</div>
+
+			<form action="{{ url_for('confirm') }}" method="POST">
+				<input type="hidden" name="action" value="null">
+			</form>
 
 		</div>
 	</div>

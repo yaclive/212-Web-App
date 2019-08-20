@@ -102,10 +102,21 @@ body {
 	margin: 10px;
 	padding-bottom: 10px;
 }
+
 .option .option-button:hover {
 	background: var(--grey);
 	color: white;
 }
+.option-button .icon_hover {
+	display: none;
+}
+.option .option-button:hover .icon {
+	display: none;
+}
+.option .option-button:hover .icon_hover {
+	display: initial;
+}
+
 .option .title {
 	font-weight: 700;
 	font-size: 1.2em;

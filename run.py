@@ -70,6 +70,8 @@ def confirm():
     if (check_status()): return redirect(url_for('jar')) # Deny dodgy submission
     if 'action' not in request.form: return redirect(url_for('jar')) # Deny request without form data
 
+    action = request.form['action']
+
     # Make change to jar
     db = sqlite3.connect(DBFILE)
 
@@ -79,20 +81,35 @@ def confirm():
     #cur = db.execute('INSERT INTO voters(ip_address, vote) VALUES(?, ?)', (user_ip, request.form['action']))
     #db.commit()
 
-    # Get jar balance
-    cur = db.execute('SELECT coins FROM jars WHERE id=1')
-    coins = cur.fetchone()[0] # Amount of coins currently in the jar
+    if (action == 'add coin' or action == 'take coin'):
+        # Get jar balance
+        cur = db.execute('SELECT coins FROM jars WHERE id=1')
+        coins = cur.fetchone()[0] # Amount of coins currently in the jar
 
-    if (request.form['action'] == 'add coin'):
-        coins += 1
-    elif (request.form['action'] == 'take coin'):
-        coins -= 1
+        if (action == 'add coin'):
+            coins += 1
+        elif (action == 'take coin'):
+            coins -= 1
 
-    coins = max(coins, 0) # Ensure jar cant have negative coins
+        coins = max(coins, 0) # Ensure jar cant have negative coins
 
-    cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
+        cur = db.execute('UPDATE jars SET coins=? WHERE id=1', (coins,)) # Set new jar balance
+        db.commit()
+    elif (action == 'add vote double' or action == 'add vote freeze' or action == 'add vote tip'):
+        cur = db.execute('SELECT * FROM modifiers WHERE id=1')
+        votes = cur.fetchone()
 
-    db.commit()
+        if (action == 'add vote double'):
+            if ((votes[1] + 1) < 500):
+                votes[1] += 1
+            else:
+                votes[1] = 0
+                print('double!')
+        elif (action == 'add vote freeze'):
+            votes[2] += 1
+        elif (action == 'add vote tip'):
+            votes[3] += 1
+
     db.close()
 
-    return(render_template('confirm.html', action=request.form['action']))
+    return(render_template('confirm.html', action=action))
